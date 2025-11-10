@@ -2,7 +2,7 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-export const Route = createFileRoute("/sign-in/$")({
+export const Route = createFileRoute("/_auth/sign-in/$")({
   component: RouteComponent,
 });
 
@@ -10,7 +10,7 @@ function RouteComponent() {
   const { signIn } = useAuthActions();
   const [step, setStep] = useState<"signUp" | "signIn">("signIn");
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#1e1e2e] px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex items-center justify-center rounded-4xl bg-[#1e1e2e] px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8">
         <div>
           <h2 className="mt-6 text-center font-extrabold text-3xl text-[#cdd6f4]">
