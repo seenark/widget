@@ -2,7 +2,7 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-export const Route = createFileRoute("/sign-in")({
+export const Route = createFileRoute("/sign-in/$")({
   component: RouteComponent,
 });
 
@@ -60,7 +60,7 @@ function RouteComponent() {
           <input name="flow" type="hidden" value={step} />
           <div>
             <button
-              className="group relative flex w-full justify-center rounded-md border border-transparent bg-[#89b4fa] px-4 py-2 font-medium text-[#1e1e2e] text-base text-sm hover:bg-[#74c7ec] focus:outline-none focus:ring-2 focus:ring-[#89b4fa] focus:ring-offset-2"
+              className="group base relative flex w-full justify-center rounded-md border border-transparent bg-[#89b4fa] px-4 py-2 font-medium text-[#1e1e2e] text-sm hover:bg-[#74c7ec] focus:outline-none focus:ring-2 focus:ring-[#89b4fa] focus:ring-offset-2"
               type="submit"
             >
               {step === "signIn" ? "Sign in" : "Sign up"}

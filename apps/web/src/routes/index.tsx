@@ -1,17 +1,41 @@
-import { convexQuery } from "@convex-dev/react-query";
+import {
+  convexQuery,
+  useConvexAuth,
+  useConvexMutation,
+} from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { api } from "@workspace/backend/api";
+import { useEffect } from "react";
 
-export const Route = createFileRoute("/")({ component: App });
+export const Route = createFileRoute("/")({
+  component: App,
+});
 
 function App() {
   const suspendUsers = convexQuery(api.users.getMany, {});
   const { data: users } = useSuspenseQuery(suspendUsers);
 
+  const { isAuthenticated } = useConvexAuth();
+
+  useEffect(() => {
+    console.log({ isAuthenticated });
+  }, [isAuthenticated]);
+
+  const addUser = useConvexMutation(api.users.add);
+
   return (
-    <div className="flex min-h-svh items-center justify-center">
+    <div className="flex min-h-svh flex-col items-center justify-center">
       <p>apps/web</p>
+      <button
+        className="cursor-pointer rounded-2xl bg-blue-300 p-2"
+        onClick={() => {
+          addUser();
+        }}
+        type="button"
+      >
+        Add User
+      </button>
       <p> {JSON.stringify(users)}</p>
     </div>
   );
