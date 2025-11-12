@@ -1,14 +1,10 @@
-import {
-  convexQuery,
-  useConvexAuth,
-  useConvexMutation,
-} from "@convex-dev/react-query";
+import { convexQuery, useConvexMutation } from "@convex-dev/react-query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { api } from "@workspace/backend/api";
-import { useEffect } from "react";
+import { SignOutView } from "../../modules/auth/views/sign-out-view";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_dashboard/")({
   component: App,
 });
 
@@ -16,11 +12,11 @@ function App() {
   const suspendUsers = convexQuery(api.users.getMany, {});
   const { data: users } = useSuspenseQuery(suspendUsers);
 
-  const { isAuthenticated } = useConvexAuth();
+  // const { isAuthenticated } = useConvexAuth();
 
-  useEffect(() => {
-    console.log({ isAuthenticated });
-  }, [isAuthenticated]);
+  // useEffect(() => {
+  //   console.log({ isAuthenticated });
+  // }, [isAuthenticated]);
 
   const addUser = useConvexMutation(api.users.add);
 
@@ -37,6 +33,7 @@ function App() {
         Add User
       </button>
       <p> {JSON.stringify(users)}</p>
+      <SignOutView />
     </div>
   );
 }

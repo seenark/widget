@@ -10,58 +10,80 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignOutRouteImport } from './routes/sign-out'
+import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as AuthRouteImport } from './routes/_auth'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/_dashboard/index'
 import { Route as AuthSignInSplatRouteImport } from './routes/_auth/sign-in/$'
+import { Route as AuthAuthSelectionSplatRouteImport } from './routes/_auth/auth-selection/$'
 
 const SignOutRoute = SignOutRouteImport.update({
   id: '/sign-out',
   path: '/sign-out',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/_dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => DashboardRoute,
 } as any)
 const AuthSignInSplatRoute = AuthSignInSplatRouteImport.update({
   id: '/sign-in/$',
   path: '/sign-in/$',
   getParentRoute: () => AuthRoute,
 } as any)
+const AuthAuthSelectionSplatRoute = AuthAuthSelectionSplatRouteImport.update({
+  id: '/auth-selection/$',
+  path: '/auth-selection/$',
+  getParentRoute: () => AuthRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/sign-out': typeof SignOutRoute
+  '/': typeof DashboardIndexRoute
+  '/auth-selection/$': typeof AuthAuthSelectionSplatRoute
   '/sign-in/$': typeof AuthSignInSplatRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
   '/sign-out': typeof SignOutRoute
+  '/': typeof DashboardIndexRoute
+  '/auth-selection/$': typeof AuthAuthSelectionSplatRoute
   '/sign-in/$': typeof AuthSignInSplatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
+  '/_dashboard': typeof DashboardRouteWithChildren
   '/sign-out': typeof SignOutRoute
+  '/_dashboard/': typeof DashboardIndexRoute
+  '/_auth/auth-selection/$': typeof AuthAuthSelectionSplatRoute
   '/_auth/sign-in/$': typeof AuthSignInSplatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/sign-out' | '/sign-in/$'
+  fullPaths: '/sign-out' | '/' | '/auth-selection/$' | '/sign-in/$'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/sign-out' | '/sign-in/$'
-  id: '__root__' | '/' | '/_auth' | '/sign-out' | '/_auth/sign-in/$'
+  to: '/sign-out' | '/' | '/auth-selection/$' | '/sign-in/$'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/_dashboard'
+    | '/sign-out'
+    | '/_dashboard/'
+    | '/_auth/auth-selection/$'
+    | '/_auth/sign-in/$'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
+  DashboardRoute: typeof DashboardRouteWithChildren
   SignOutRoute: typeof SignOutRoute
 }
 
@@ -74,6 +96,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignOutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -81,12 +110,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/_dashboard/': {
+      id: '/_dashboard/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/_auth/sign-in/$': {
       id: '/_auth/sign-in/$'
@@ -95,22 +124,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignInSplatRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_auth/auth-selection/$': {
+      id: '/_auth/auth-selection/$'
+      path: '/auth-selection/$'
+      fullPath: '/auth-selection/$'
+      preLoaderRoute: typeof AuthAuthSelectionSplatRouteImport
+      parentRoute: typeof AuthRoute
+    }
   }
 }
 
 interface AuthRouteChildren {
+  AuthAuthSelectionSplatRoute: typeof AuthAuthSelectionSplatRoute
   AuthSignInSplatRoute: typeof AuthSignInSplatRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthAuthSelectionSplatRoute: AuthAuthSelectionSplatRoute,
   AuthSignInSplatRoute: AuthSignInSplatRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface DashboardRouteChildren {
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
+  DashboardRoute: DashboardRouteWithChildren,
   SignOutRoute: SignOutRoute,
 }
 export const routeTree = rootRouteImport
