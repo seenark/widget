@@ -6,6 +6,7 @@ import { SignOutView } from "../../modules/auth/views/sign-out-view";
 
 export const Route = createFileRoute("/_dashboard/")({
   component: App,
+  ssr: false,
 });
 
 function App() {
