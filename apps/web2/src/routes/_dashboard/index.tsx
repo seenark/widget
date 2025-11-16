@@ -21,6 +21,7 @@ function RouteComponent() {
       <button
         className="cursor-pointer rounded-2xl bg-blue-300 p-2"
         onClick={() => {
+          throw new Error("Test error");
           addUser();
         }}
         type="button"
