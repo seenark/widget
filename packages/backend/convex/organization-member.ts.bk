@@ -1,0 +1,8 @@
+// export const getOrganizationFromUserId = query({
+//   args: {
+//     userId: v.string(),
+//   },
+//   handler: (_ctx, { userId: _ }) => ({
+//     msg: "Ok",
+//   }),
+// });
